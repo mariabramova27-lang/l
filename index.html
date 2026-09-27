@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ларец знаний — Десятичные дроби — Мягкая математика</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  color: #2d3436;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(168, 230, 207, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 100% 0%, rgba(212, 197, 249, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 0% 100%, rgba(255, 211, 182, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(255, 234, 167, 0.12) 0%, transparent 45%),
+    #fef9f3;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(168, 230, 207, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(212, 197, 249, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(255, 211, 182, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px, 80px 80px, 100px 100px;
+  background-color: #fef9f3;
+}
+
+body::before {
+  content: "Мягкая математика · ОГЭ/ЕГЭ · Олимпиады · ВПР · vk.com/smartskillsmaria";
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-22deg);
+  font-size: 32px; font-weight: 900;
+  color: rgba(108, 92, 231, 0.04);
+  white-space: nowrap;
+  pointer-events: none; z-index: 0;
+  user-select: none; letter-spacing: 3px;
+  font-family: 'Arial Black', 'Arial', sans-serif;
+}
+
+.container { position: relative; z-index: 1; max-width: 950px; margin: 0 auto; }
+
+.screen { display: none; animation: fadeIn 0.5s ease; }
+.screen.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes chestShake {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+@keyframes cardFlip {
+  from { transform: rotateY(90deg); opacity: 0; }
+  to { transform: rotateY(0deg); opacity: 1; }
+}
+
+@keyframes rewardPop {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.btn {
+  display: inline-block;
+  background: #a8e6cf; color: #2d3436;
+  padding: 14px 36px; border-radius: 60px;
+  font-size: 16px; font-weight: 700;
+  border: none; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(168, 230, 207, 0.6);
+  transition: all 0.3s ease;
+  font-family: 'Arial', sans-serif;
+  margin: 5px;
+}
+.btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(168, 230, 207, 0.8); }
+.btn-secondary { background: #d4c5f9; color: #4a3f7a; box-shadow: 0 8px 24px rgba(212, 197, 249, 0.6); }
+.btn-secondary:hover { box-shadow: 0 12px 32px rgba(212, 197, 249, 0.8); }
+.btn-small { padding: 10px 22px; font-size: 14px; border-radius: 30px; }
+.btn-gold { background: #ffeaa7; color: #7a5c1e; box-shadow: 0 8px 24px rgba(255, 234, 167, 0.6); }
+.btn-gold:hover { box-shadow: 0 12px 32px rgba(255, 234, 167, 0.9); }
+
+/* СТАРТОВЫЙ ЭКРАН */
+.start-card {
+  background: linear-gradient(135deg, #d4c5f9, #bae1ff);
+  color: #4a3f7a;
+  padding: 50px 40px;
+  border-radius: 30px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(212, 197, 249, 0.4);
+}
+.start-card h1 { font-size: 42px; margin-bottom: 12px; }
+.start-card .subtitle { font-size: 18px; opacity: 0.95; margin-bottom: 30px; }
+
+.chest-big {
+  font-size: 140px;
+  cursor: pointer;
+  display: inline-block;
+  animation: chestShake 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+.chest-big:hover { transform: scale(1.1) rotate(0deg); animation: none; }
+
+.ad-block {
+  background: rgba(255, 255, 255, 0.6);
+  border-left: 4px solid #a8e6cf;
+  padding: 15px 20px; margin-top: 25px;
+  border-radius: 12px; font-size: 14px;
+  line-height: 1.7; text-align: left;
+  color: #4a3f7a;
+}
+.ad-block.light { background: #f8f9fa; border-left: 4px solid #a8e6cf; color: #636e72; }
+.ad-block a { color: #6c5ce7; font-weight: 700; text-decoration: underline; display: inline-block; margin: 2px 0; }
+.ad-block a:hover { opacity: 0.8; }
+
+/* ШАПКА */
+.screen-header {
+  background: #fff; padding: 18px 25px;
+  border-radius: 60px; margin-bottom: 20px;
+  display: flex; justify-content: space-between;
+  align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  flex-wrap: wrap; gap: 10px;
+}
+.screen-header h2 { font-size: 20px; color: #6c5ce7; }
+.screen-header .score-info { font-size: 16px; font-weight: 700; color: #e17055; }
+
+/* ЛАРЕЦ С ОТДЕЛЕНИЯМИ */
+.chest-container {
+  background: #fff; padding: 30px;
+  border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+.chest-visual {
+  display: flex; flex-direction: column;
+  gap: 15px; max-width: 600px; margin: 0 auto;
+}
+
+.compartment {
+  display: flex; align-items: center; gap: 20px;
+  padding: 25px 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 3px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+.compartment:hover { transform: translateX(8px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+.compartment.knowledge {
+  background: linear-gradient(135deg, #bae1ff, #a8d8ff);
+  border-color: #74b9ff;
+}
+.compartment.tasks {
+  background: linear-gradient(135deg, #a8e6cf, #7ed6b5);
+  border-color: #55b88e;
+}
+.compartment.rewards {
+  background: linear-gradient(135deg, #ffeaa7, #ffd93d);
+  border-color: #e1b800;
+}
+
+.compartment .comp-icon {
+  font-size: 48px;
+  flex-shrink: 0;
+}
+.compartment .comp-info { flex: 1; }
+.compartment .comp-info h3 {
+  font-size: 22px; margin-bottom: 5px;
+  color: #2d3436;
+}
+.compartment .comp-info p {
+  font-size: 14px; color: #636e72;
+}
+.compartment .comp-count {
+  font-size: 14px; font-weight: 700;
+  color: #2d3436;
+  background: rgba(255,255,255,0.5);
+  padding: 6px 14px; border-radius: 30px;
+  flex-shrink: 0;
+}
+.compartment.opened {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.compartment.opened::after {
+  content: "✓ Открыто";
+  position: absolute;
+  top: 10px; right: 15px;
+  font-size: 12px; font-weight: 700;
+  color: #2d3436;
+  background: rgba(255,255,255,0.7);
+  padding: 4px 12px; border-radius: 20px;
+}
+
+/* ЭКРАН ОТДЕЛЕНИЯ */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card-item {
+  background: #fff;
+  border-radius: 20px;
+  padding: 25px 20px;
+  min-height: 160px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 3px solid #dfe6e9;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  animation: cardFlip 0.4s ease;
+}
+.card-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  border-color: #a8e6cf;
+}
+.card-item.solved {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  border-color: #55b88e;
+}
+.card-item .card-icon { font-size: 40px; }
+.card-item .card-title {
+  font-size: 14px; font-weight: 700;
+  color: #2d3436;
+}
+.card-item .card-status {
+  font-size: 12px; color: #b2bec3;
+}
+.card-item.solved .card-status {
+  color: #55b88e; font-weight: 700;
+}
+
+/* ЭКРАН КАРТОЧКИ */
+.card-detail {
+  background: #fff;
+  border-radius: 24px;
+  padding: 35px 30px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+  min-height: 300px;
+}
+.card-detail .card-detail-icon {
+  font-size: 56px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+.card-detail h2 {
+  font-size: 22px;
+  color: #6c5ce7;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.card-detail .card-detail-content {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #2d3436;
+}
+.card-detail .card-detail-content strong {
+  color: #6c5ce7;
+}
+
+/* ЗАДАЧА */
+.task-question {
+  background: linear-gradient(135deg, #f0edff, #e8e0ff);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.task-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+.task-input-row input {
+  flex: 1;
+  min-width: 200px;
+  padding: 14px 18px;
+  border: 3px solid #dfe6e9;
+  border-radius: 14px;
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  transition: border-color 0.2s;
+}
+.task-input-row input:focus {
+  outline: none;
+  border-color: #a8e6cf;
+}
+
+.task-feedback {
+  padding: 18px 20px;
+  border-radius: 14px;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  display: none;
+}
+.task-feedback.show { display: block; animation: fadeIn 0.3s ease; }
+.task-feedback.correct {
+  background: #d4edda;
+  border-left: 5px solid #55b88e;
+  color: #155724;
+}
+.task-feedback.wrong {
+  background: #fff3cd;
+  border-left: 5px solid #ffd93d;
+  color: #856404;
+}
+
+.task-hint {
+  background: #fff9e6;
+  padding: 15px 20px;
+  border-radius: 14px;
+  margin-top: 15px;
+  font-size: 15px;
+  color: #7a5c1e;
+  border-left: 4px solid #ffd93d;
+  display: none;
+}
+.task-hint.show { display: block; animation: fadeIn 0.3s ease; }
+
+/* НАГРАДЫ */
+.reward-card {
+  background: linear-gradient(135deg, #fff9e6, #ffeaa7);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 3px solid #e1b800;
+  animation: rewardPop 0.5s ease;
+}
+.reward-card .reward-icon {
+  font-size: 80px;
+  margin-bottom: 15px;
+}
+.reward-card h2 {
+  font-size: 26px;
+  color: #7a5c1e;
+  margin-bottom: 10px;
+}
+.reward-card p {
+  font-size: 17px;
+  color: #7a5c1e;
+  line-height: 1.6;
+}
+
+/* КОНТРОЛЫ */
+.controls {
+  display: flex; gap: 12px;
+  justify-content: center; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+/* ПРОГРЕСС */
+.progress-bar-top {
+  width: 100%; height: 10px;
+  background: #f0edff;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-bar-top .progress-fill-top {
+  height: 100%;
+  background: linear-gradient(90deg, #a8e6cf, #55b88e);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+/* ИТОГИ */
+.result-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.result-card h1 {
+  font-size: 36px;
+  color: #6c5ce7;
+  margin-bottom: 15px;
+}
+.result-card .result-emoji {
+  font-size: 80px;
+  margin: 20px 0;
+}
+.result-card .result-text {
+  font-size: 20px;
+  color: #2d3436;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.stats-block {
+  background: #f8f9fa;
+  border-radius: 20px;
+  padding: 25px;
+  margin: 25px 0;
+  text-align: left;
+}
+.stats-block h3 {
+  font-size: 16px;
+  color: #6c5ce7;
+  margin-bottom: 15px;
+}
+.stats-row {
+  display: flex; justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed #dfe6e9;
+  font-size: 15px;
+}
+.stats-row:last-child { border-bottom: none; }
+.stats-row .stat-label { font-weight: 700; color: #636e72; }
+.stats-row .stat-value { font-weight: 700; color: #55b88e; font-size: 17px; }
+
+/* ПОПАП */
+.popup-overlay {
+  display: none; position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4); z-index: 999;
+  justify-content: center; align-items: center;
+  padding: 20px;
+}
+.popup-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+.popup-content {
+  background: #fff;
+  padding: 35px 30px;
+  border-radius: 24px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  position: relative;
+}
+.popup-content h3 { font-size: 24px; color: #6c5ce7; margin-bottom: 15px; }
+.popup-content p { font-size: 16px; color: #636e72; margin-bottom: 10px; line-height: 1.6; }
+.popup-content .close-btn {
+  position: absolute; top: 15px; right: 20px;
+  background: none; border: none; font-size: 28px;
+  color: #b2bec3; cursor: pointer;
+  transition: color 0.2s;
+  font-family: 'Arial', sans-serif;
+}
+.popup-content .close-btn:hover { color: #636e72; }
+
+/* АДАПТИВ */
+@media (max-width: 700px) {
+  body::before { font-size: 18px; }
+  .start-card { padding: 35px 25px; }
+  .start-card h1 { font-size: 30px; }
+  .chest-big { font-size: 100px; }
+  .compartment { padding: 18px 20px; }
+  .compartment .comp-icon { font-size: 36px; }
+  .compartment .comp-info h3 { font-size: 18px; }
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .card-detail { padding: 25px 20px; }
+}
+@media (max-width: 480px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  .compartment .comp-count { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ============================================================
+       ЭКРАН 1: СТАРТ
+       ============================================================ -->
+  <div id="start-screen" class="screen active">
+    <div class="start-card">
+      <h1>🎁 Ларец знаний</h1>
+      <p class="subtitle">Тема: Десятичные дроби · Занятие 5</p>
+
+      <div class="chest-big" onclick="startGame()">📦</div>
+
+      <div style="margin-top: 20px;">
+        <button type="button" class="btn" onclick="startGame()">🚀 Открыть ларец</button>
+      </div>
+
+      <div class="ad-block">
+        <p><strong>Хочешь открыть все секреты математики?</strong></p>
+        <p>Приходи в «Мягкую математику»! Подготовка к ОГЭ/ЕГЭ, олимпиадам и ВПР.</p>
+        <a href="https://vk.com/smartskillsmaria" target="_blank" rel="noopener">📢 Подписывайся на группу</a><br>
+        <a href="https://vk.com/im/convo/-229273902?entrypoint=community_page&tab=all" target="_blank" rel="noopener">✉️ Пиши Марии Абрамовой</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ЭКРАН 2: ЛАРЕЦ С ОТДЕЛЕНИЯМИ
+       ============================================================ -->
+  <div id="chest-screen" class="screen">
+    <div class="screen-header">
+      <h2>🎁 Ларец знаний</h2>
+      <div class="score-info">🏆 Монеток: <span id="coins-display">0</span></div>
+    </div>
+
+    <div class="chest-container">
+      <div class="chest-visual">
+
+        <div class="compartment knowledge" id="comp-knowledge" onclick="openCompartment('knowledge')">
+          <div class="comp-icon">📚</div>
+          <div class="comp-info">
+            <h3>Знания</h3>
+            <p>Факты, определения, примеры</p>
+          </div>
+          <div class="comp-count" id="count-knowledge">0/5</div>
+        </div>
+
+        <div class="compartment tasks" id="comp-tasks" onclick="openCompartment('tasks')">
+          <div class="comp-icon">🎯</div>
+          <div class="comp-info">
+            <h3>Задачи</h3>
+            <p>Реши и получи монетку</p>
+          </div>
+          <div class="comp-count" id="count-tasks">0/5</div>
+        </div>
+
+        <div class="compartment rewards" id="comp-rewards" onclick="openCompartment('rewards')">
+          <div class="comp-icon">🏆</div>
+          <div class="comp-info">
+            <h3>Награды</h3>
+            <p>Мотивация и рефлексия</p>
+          </div>
+          <div class="comp-count" id="count-rewards">0/4</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="controls">
+      <button type="button" class="btn btn-gold btn-small" onclick="showResult()">📊 Итоги</button>
+      <button type="button" class="btn btn-secondary btn-small" onclick="restartGame()">🔄 Заново</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ЭКРАН 3: ОТДЕЛЕНИЕ
+       ============================================================ -->
+  <div id="compartment-screen" class="screen">
+    <div class="screen-header">
+      <h2 id="compartment-title">Знания</h2>
+      <div class="score-info">🏆 Монеток: <span id="coins-display-2">0</span></div>
+    </div>
+
+    <div class="progress-bar-top">
+      <div class="progress-fill-top" id="compartment-progress"></div>
+    </div>
+
+    <div class="cards-grid" id="cards-container"></div>
+
+    <div class="controls">
+      <button type="button" class="btn btn-secondary btn-small" onclick="goBackToChest()">← Назад к ларцу</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ЭКРАН 4: КАРТОЧКА
+       ============================================================ -->
+  <div id="card-screen" class="screen">
+    <div class="screen-header">
+      <h2 id="card-header-title">Карточка</h2>
+      <div class="score-info">🏆 Монеток: <span id="coins-display-3">0</span></div>
+    </div>
+
+    <div class="card-detail" id="card-detail"></div>
+
+    <div class="controls">
+      <button type="button" class="btn btn-secondary btn-small" onclick="goBackToCompartment()">← Назад</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ЭКРАН 5: ИТОГИ
+       ============================================================ -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-emoji" id="result-emoji">🎉</div>
+      <h1 id="result-title">Ларец открыт!</h1>
+      <p class="result-text" id="result-text"></p>
+
+      <div class="stats-block">
+        <h3>📊 Твои результаты</h3>
+        <div class="stats-row">
+          <span class="stat-label">Изучено фактов:</span>
+          <span class="stat-value" id="stat-facts">0</span>
+        </div>
+        <div class="stats-row">
+          <span class="stat-label">Решено задач:</span>
+          <span class="stat-value" id="stat-tasks">0</span>
+        </div>
+        <div class="stats-row">
+          <span class="stat-label">Получено монеток:</span>
+          <span class="stat-value" id="stat-coins">0</span>
+        </div>
+        <div class="stats-row">
+          <span class="stat-label">Открыто наград:</span>
+          <span class="stat-value" id="stat-rewards">0</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" class="btn btn-gold" onclick="restartGame()">🔄 Играть снова</button>
+      </div>
+
+      <div class="ad-block light" style="text-align: center; border-left: none; border-top: 4px solid #a8e6cf; margin-top: 30px;">
+        <p><strong>Ты открыл ларец знаний! Развивай свои навыки в «Мягкой математике»!</strong></p>
+        <p>Курсы для 1–11 классов. Подготовка к ОГЭ/ЕГЭ, олимпиадам, ВПР.</p>
+        <a href="https://vk.com/smartskillsmaria" target="_blank" rel="noopener">📢 Подписывайся на группу</a><br>
+        <a href="https://vk.com/im/convo/-229273902?entrypoint=community_page&tab=all" target="_blank" rel="noopener">✉️ Пиши Марии Абрамовой</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     ПОПАП РЕКЛАМЫ
+     ============================================================ -->
+<div class="popup-overlay" id="popup-ad">
+  <div class="popup-content">
+    <button type="button" class="close-btn" onclick="closePopup()">×</button>
+    <h3>Отличный прогресс! 🚀</h3>
+    <p>Ты открыл два отделения ларца!</p>
+    <p>Хочешь ещё больше сокровищ математики?</p>
+
+    <div class="ad-block light" style="text-align: left;">
+      <p><strong>«Мягкая математика»</strong> — это:</p>
+      <p>✅ Подготовка к ОГЭ/ЕГЭ<br>
+         ✅ Олимпиадная математика<br>
+         ✅ ВПР и школьная программа<br>
+         ✅ Мягкие навыки и финансовая грамотность</p>
+      <a href="https://vk.com/smartskillsmaria" target="_blank" rel="noopener">📢 Подписывайся на группу</a><br>
+      <a href="https://vk.com/im/convo/-229273902?entrypoint=community_page&tab=all" target="_blank" rel="noopener">✉️ Пиши Марии Абрамовой</a>
+    </div>
+
+    <button type="button" class="btn" onclick="closePopup()">Продолжить →</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// ДАННЫЕ ЛАРЦА — ТЕМА «ДЕСЯТИЧНЫЕ ДРОБИ»
+// ============================================================
+const chestData = {
+  knowledge: [
+    {
+      icon: "📖",
+      title: "Что такое дробь?",
+      content: "<strong>Обыкновенная дробь</strong> — это дробь вида <strong>a/b</strong>, где a — числитель, b — знаменатель. Например: 1/2, 3/4, 5/8."
+    },
+    {
+      icon: "🔢",
+      title: "Что такое десятичная дробь?",
+      content: "<strong>Десятичная дробь</strong> — это дробь со знаменателем <strong>10, 100, 1000</strong> и т.д. Записывается через запятую. Например: 0,5; 0,75; 0,125."
+    },
+    {
+      icon: "✨",
+      title: "Перевод 1/2",
+      content: "Чтобы перевести <strong>1/2</strong> в десятичную, умножим числитель и знаменатель на 5:<br><strong>1/2 = 5/10 = 0,5</strong>"
+    },
+    {
+      icon: "✨",
+      title: "Перевод 3/4",
+      content: "Чтобы перевести <strong>3/4</strong>, умножим на 25:<br><strong>3/4 = 75/100 = 0,75</strong>"
+    },
+    {
+      icon: "💡",
+      title: "Если знаменатель не приводится",
+      content: "Если знаменатель не приводится к 10, 100, 1000 — просто <strong>делим числитель на знаменатель</strong>.<br>Например: 3/8 = 3 ÷ 8 = 0,375."
+    }
+  ],
+  tasks: [
+    {
+      icon: "🎯",
+      title: "Задача 1",
+      question: "Переведи <strong>1/5</strong> в десятичную дробь.",
+      answer: "0,2",
+      acceptedAnswers: ["0,2", "0.2", "0,20"],
+      hint: "Умножь числитель и знаменатель на 2: 1/5 = 2/10 = ?"
+    },
+    {
+      icon: "🎯",
+      title: "Задача 2",
+      question: "Переведи <strong>3/8</strong> в десятичную дробь.",
+      answer: "0,375",
+      acceptedAnswers: ["0,375", "0.375"],
+      hint: "Раздели 3 на 8 столбиком."
+    },
+    {
+      icon: "🎯",
+      title: "Задача 3",
+      question: "Переведи <strong>0,6</strong> в обыкновенную дробь.",
+      answer: "3/5",
+      acceptedAnswers: ["3/5", "3 / 5"],
+      hint: "0,6 = 6/10. Сократи дробь."
+    },
+    {
+      icon: "🎯",
+      title: "Задача 4",
+      question: "Переведи <strong>0,25</strong> в обыкновенную дробь.",
+      answer: "1/4",
+      acceptedAnswers: ["1/4", "1 / 4"],
+      hint: "0,25 = 25/100. Сократи дробь."
+    },
+    {
+      icon: "🎯",
+      title: "Задача 5",
+      question: "Что больше: <strong>0,5</strong> или <strong>0,45</strong>?",
+      answer: "0,5",
+      acceptedAnswers: ["0,5", "0.5", "0,50"],
+      hint: "Сравни: 0,50 и 0,45. Какое число больше?"
+    }
+  ],
+  rewards: [
+    {
+      icon: "🏆",
+      title: "Монетка за старание!",
+      content: "Ты открыл ларец и начал путь к знаниям. Каждая задача — шаг вперёд!"
+    },
+    {
+      icon: "⭐",
+      title: "Звёздочка за смелость!",
+      content: "Не бойся ошибаться. Ошибка — это данные для роста!"
+    },
+    {
+      icon: "💪",
+      title: "Ты справляешься!",
+      content: "Десятичные дроби — это просто. Главное — практика!"
+    },
+    {
+      icon: "🌟",
+      title: "Рефлексия",
+      content: "Что было самым интересным? Что было сложным? Что хочу узнать дальше?"
+    }
+  ]
+};
+
+// ============================================================
+// СОСТОЯНИЕ ИГРЫ
+// ============================================================
+let state = {
+  coins: 0,
+  factsRead: new Set(),
+  tasksSolved: new Set(),
+  rewardsOpened: new Set(),
+  currentCompartment: null,
+  currentCardIndex: null,
+  popupShown: false,
+  compartmentsOpened: new Set()
+};
+
+// ============================================================
+// СТАРТ
+// ============================================================
+function startGame() {
+  document.getElementById('start-screen').classList.remove('active');
+  document.getElementById('chest-screen').classList.add('active');
+  updateCoinsDisplay();
+}
+
+// ============================================================
+// ОТКРЫТИЕ ОТДЕЛЕНИЯ
+// ============================================================
+function openCompartment(name) {
+  state.currentCompartment = name;
+
+  // Отмечаем отделение как открытое
+  state.compartmentsOpened.add(name);
+
+  const titles = {
+    knowledge: '📚 Знания',
+    tasks: '🎯 Задачи',
+    rewards: '🏆 Награды'
+  };
+
+  document.getElementById('compartment-title').textContent = titles[name];
+  document.getElementById('chest-screen').classList.remove('active');
+  document.getElementById('compartment-screen').classList.add('active');
+  updateCoinsDisplay();
+  renderCards(name);
+  updateCompartmentProgress();
+}
+
+function renderCards(name) {
+  const container = document.getElementById('cards-container');
+  container.innerHTML = '';
+  const items = chestData[name];
+
+  items.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'card-item';
+
+    // Проверяем, решена/прочитана ли карточка
+    let isSolved = false;
+    if (name === 'knowledge' && state.factsRead.has(index)) isSolved = true;
+    if (name === 'tasks' && state.tasksSolved.has(index)) isSolved = true;
+    if (name === 'rewards' && state.rewardsOpened.has(index)) isSolved = true;
+
+    if (isSolved) card.classList.add('solved');
+
+    card.innerHTML = `
+      <div class="card-icon">${item.icon}</div>
+      <div class="card-title">${item.title}</div>
+      <div class="card-status">${isSolved ? '✓ Открыто' : 'Нажми, чтобы открыть'}</div>
+    `;
+
+    card.onclick = () => openCard(name, index);
+    container.appendChild(card);
+  });
+}
+
+function updateCompartmentProgress() {
+  const name = state.currentCompartment;
+  const total = chestData[name].length;
+  let solved = 0;
+
+  if (name === 'knowledge') solved = state.factsRead.size;
+  if (name === 'tasks') solved = state.tasksSolved.size;
+  if (name === 'rewards') solved = state.rewardsOpened.size;
+
+  const percent = (solved / total) * 100;
+  document.getElementById('compartment-progress').style.width = percent + '%';
+}
+
+// ============================================================
+// ОТКРЫТИЕ КАРТОЧКИ
+// ============================================================
+function openCard(name, index) {
+  state.currentCardIndex = index;
+  const item = chestData[name][index];
+
+  document.getElementById('compartment-screen').classList.remove('active');
+  document.getElementById('card-screen').classList.add('active');
+  updateCoinsDisplay();
+
+  const container = document.getElementById('card-detail');
+
+  if (name === 'knowledge') {
+    state.factsRead.add(index);
+    container.innerHTML = `
+      <div class="card-detail-icon">${item.icon}</div>
+      <h2>${item.title}</h2>
+      <div class="card-detail-content">${item.content}</div>
+      <div class="task-feedback correct show" style="margin-top: 20px;">
+        ✅ Факт изучен! +1 монетка
+      </div>
+    `;
+    state.coins += 1;
+    updateCoinsDisplay();
+    updateCounters();
+  }
+
+  else if (name === 'tasks') {
+    const isSolved = state.tasksSolved.has(index);
+    container.innerHTML = `
+      <div class="card-detail-icon">${item.icon}</div>
+      <h2>${item.title}</h2>
+      <div class="task-question">${item.question}</div>
+      <div class="task-input-row">
+        <input type="text" id="task-answer" placeholder="Введи ответ..." ${isSolved ? 'disabled' : ''}>
+        <button type="button" class="btn btn-small" onclick="checkAnswer(${index})" ${isSolved ? 'disabled' : ''}>
+          ${isSolved ? '✓ Решено' : 'Проверить'}
+        </button>
+        <button type="button" class="btn btn-secondary btn-small" onclick="showHint()">💡 Подсказка</button>
+      </div>
+      <div class="task-hint" id="task-hint">💡 ${item.hint}</div>
+      <div class="task-feedback" id="task-feedback"></div>
+    `;
+
+    // Фокус на поле
+    setTimeout(() => {
+      const input = document.getElementById('task-answer');
+      if (input && !input.disabled) input.focus();
+    }, 100);
+  }
+
+  else if (name === 'rewards') {
+    state.rewardsOpened.add(index);
+    container.innerHTML = `
+      <div class="reward-card">
+        <div class="reward-icon">${item.icon}</div>
+        <h2>${item.title}</h2>
+        <p>${item.content}</p>
+      </div>
+      <div class="task-feedback correct show" style="margin-top: 20px;">
+        🌟 Открыто! Так держать!
+      </div>
+    `;
+    updateCounters();
+  }
+}
+
+// ============================================================
+// ПРОВЕРКА ОТВЕТА
+// ============================================================
+function checkAnswer(index) {
+  const input = document.getElementById('task-answer');
+  const feedback = document.getElementById('task-feedback');
+  const task = chestData.tasks[index];
+
+  if (!input || !feedback) return;
+
+  const userAnswer = input.value.trim().replace(/\s+/g, '').replace(',', '.');
+
+  if (!userAnswer) {
+    feedback.className = 'task-feedback wrong show';
+    feedback.textContent = '🤔 Введи ответ!';
+    return;
+  }
+
+  // Проверка на совпадение с любым из принятых ответов
+  const isCorrect = task.acceptedAnswers.some(ans =>
+    ans.replace(/\s+/g, '').replace(',', '.').toLowerCase() === userAnswer.toLowerCase()
+  );
+
+  if (isCorrect) {
+    state.tasksSolved.add(index);
+    state.coins += 2;
+    updateCoinsDisplay();
+    updateCounters();
+
+    feedback.className = 'task-feedback correct show';
+    feedback.innerHTML = `✅ Правильно! Ответ: <strong>${task.answer}</strong><br>🏆 +2 монетки!`;
+
+    input.disabled = true;
+    const btn = input.nextElementSibling;
+    if (btn) {
+      btn.textContent = '✓ Решено';
+      btn.disabled = true;
+    }
+  } else {
+    feedback.className = 'task-feedback wrong show';
+    feedback.innerHTML = `🤔 Не совсем так. Попробуй ещё раз!<br>💡 Подсказка: нажми кнопку "Подсказка".`;
+  }
+}
+
+function showHint() {
+  const hint = document.getElementById('task-hint');
+  if (hint) hint.classList.add('show');
+}
+
+// ============================================================
+// НАВИГАЦИЯ
+// ============================================================
+function goBackToChest() {
+  document.getElementById('compartment-screen').classList.remove('active');
+  document.getElementById('chest-screen').classList.add('active');
+  updateCounters();
+  updateCoinsDisplay();
+
+  // Проверяем, нужно ли показать попап
+  if (state.compartmentsOpened.size >= 2 && !state.popupShown) {
+    state.popupShown = true;
+    setTimeout(() => {
+      document.getElementById('popup-ad').classList.add('show');
+    }, 500);
+  }
+}
+
+function goBackToCompartment() {
+  document.getElementById('card-screen').classList.remove('active');
+  document.getElementById('compartment-screen').classList.add('active');
+  renderCards(state.currentCompartment);
+  updateCompartmentProgress();
+  updateCoinsDisplay();
+}
+
+// ============================================================
+// СЧЁТЧИКИ
+// ============================================================
+function updateCoinsDisplay() {
+  document.getElementById('coins-display').textContent = state.coins;
+  const el2 = document.getElementById('coins-display-2');
+  const el3 = document.getElementById('coins-display-3');
+  if (el2) el2.textContent = state.coins;
+  if (el3) el3.textContent = state.coins;
+}
+
+function updateCounters() {
+  document.getElementById('count-knowledge').textContent = `${state.factsRead.size}/5`;
+  document.getElementById('count-tasks').textContent = `${state.tasksSolved.size}/5`;
+  document.getElementById('count-rewards').textContent = `${state.rewardsOpened.size}/4`;
+
+  // Помечаем отделения как открытые
+  if (state.factsRead.size === 5) document.getElementById('comp-knowledge').classList.add('opened');
+  if (state.tasksSolved.size === 5) document.getElementById('comp-tasks').classList.add('opened');
+  if (state.rewardsOpened.size === 4) document.getElementById('comp-rewards').classList.add('opened');
+}
+
+// ============================================================
+// ИТОГИ
+// ============================================================
+function showResult() {
+  document.getElementById('chest-screen').classList.remove('active');
+  document.getElementById('result-screen').classList.add('active');
+
+  const facts = state.factsRead.size;
+  const tasks = state.tasksSolved.size;
+  const rewards = state.rewardsOpened.size;
+  const coins = state.coins;
+
+  document.getElementById('stat-facts').textContent = `${facts} из 5`;
+  document.getElementById('stat-tasks').textContent = `${tasks} из 5`;
+  document.getElementById('stat-rewards').textContent = `${rewards} из 4`;
+  document.getElementById('stat-coins').textContent = coins;
+
+  const resultEmoji = document.getElementById('result-emoji');
+  const resultTitle = document.getElementById('result-title');
+  const resultText = document.getElementById('result-text');
+
+  const totalDone = facts + tasks;
+  if (totalDone >= 8) {
+    resultEmoji.textContent = '🏆';
+    resultTitle.textContent = 'Превосходно!';
+    resultText.textContent = `Ты открыл почти все сокровища! ${coins} монеток — отличный результат!`;
+  } else if (totalDone >= 5) {
+    resultEmoji.textContent = '🎉';
+    resultTitle.textContent = 'Отличный результат!';
+    resultText.textContent = `Ты открыл ${totalDone} сокровищ и заработал ${coins} монеток!`;
+  } else if (totalDone >= 2) {
+    resultEmoji.textContent = '👍';
+    resultTitle.textContent = 'Хорошее начало!';
+    resultText.textContent = `Ты открыл ${totalDone} сокровищ. Продолжай в том же духе!`;
+  } else {
+    resultEmoji.textContent = '💪';
+    resultTitle.textContent = 'Начни путешествие!';
+    resultText.textContent = 'Открой ларец и найди сокровища математики!';
+  }
+}
+
+// ============================================================
+// СБРОС
+// ============================================================
+function restartGame() {
+  state = {
+    coins: 0,
+    factsRead: new Set(),
+    tasksSolved: new Set(),
+    rewardsOpened: new Set(),
+    currentCompartment: null,
+    currentCardIndex: null,
+    popupShown: false,
+    compartmentsOpened: new Set()
+  };
+
+  // Убираем метки "открыто"
+  document.querySelectorAll('.compartment').forEach(c => c.classList.remove('opened'));
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('start-screen').classList.add('active');
+
+  updateCoinsDisplay();
+  updateCounters();
+}
+
+// ============================================================
+// ПОПАП
+// ============================================================
+function closePopup() {
+  document.getElementById('popup-ad').classList.remove('show');
+}
+
+document.getElementById('popup-ad').addEventListener('click', function(e) {
+  if (e.target === this) closePopup();
+});
+
+// ============================================================
+// ИНИЦИАЛИЗАЦИЯ
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  updateCoinsDisplay();
+  updateCounters();
+});
+
+console.log('🎁 Ларец знаний загружен! Тема: Десятичные дроби');
+console.log('📢 Мягкая математика: https://vk.com/smartskillsmaria');
+</script>
+</body>
+</html>
